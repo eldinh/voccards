@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${sys:PID} --- [%15.15t] %-40.40logger{1.} : %m%n%wEx"/>
+            <Filters>
+                <ThresholdFilter level="info"  onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="warn"  onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="fatal" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="debug"  onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+        </Console>
+
+        <Console name="ConsoleOwn" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${sys:PID} --- [%15.15t] %-40.40logger{1.} : %m%n%wEx"/>
+            <Filters>
+                <ThresholdFilter level="info"  onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="debug"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Console>
+
+    </appenders>
+
+    <loggers>
+
+        <Logger name="ru.sfedu.voccards.controller" level="debug">
+            <appender-ref ref="ConsoleOwn"/>
+        </Logger>
+
+        <Logger name="ru.sfedu.voccards.config" level = "debug">
+            <appender-ref ref="ConsoleOwn"/>
+        </Logger>
+
+        <Logger name="ru.sfedu.voccards.service" level = "debug">
+            <appender-ref ref="ConsoleOwn"/>
+        </Logger>
+
+        <Root level = "all">
+            <appender-ref ref="Console"/>
+        </Root>
+
+
+    </loggers>
+
+
+</configuration>
