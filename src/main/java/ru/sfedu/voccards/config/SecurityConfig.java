@@ -71,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/register").permitAll();
         http.authorizeRequests().antMatchers("/api/signin").permitAll();
         http.authorizeRequests().antMatchers("/api/users").permitAll();
+        http.authorizeRequests().antMatchers("/api/createCardSet").authenticated();
+        http.authorizeRequests().antMatchers("/api/getOwnCardSet").authenticated();
 
         // adding custom filter
         http.addFilterBefore(authJwtTokenFilter()
