@@ -28,7 +28,7 @@
 
     <loggers>
 
-        <Logger name="ru.sfedu.voccards.dao.CardDaoTest" level="all">
+        <Logger name="ru.sfedu.voccards" level="all">
             <appender-ref ref="ConsoleOwn"/>
         </Logger>
 

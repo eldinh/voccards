@@ -14,23 +14,12 @@ import static ru.sfedu.voccards.Constants.*;
 
 public class AuthServiceTest extends BaseTest {
 
-    public static final Logger log = LogManager.getLogger(AuthServiceTest.class.getName());
-
-    @Before
-    public void before() {
-        cardDao.deleteAll();
-        cardSetDao.deleteAll();
-        userDao.deleteAll();
-        roleDao.deleteAll();
-        roleDao.save(new Role(null, ERole.ROLE_USER));
-        roleDao.save(new Role(null, ERole.ROLE_TEACHER));
-        roleDao.save(new Role(null, ERole.ROLE_VIP));
-    }
 
     @Test
     public void testAuthUser(){
         log.info("Test auth user");
         log.debug("Authentication process");
+        assertEquals(authService.register(signupRequest).getStatusCode(), HttpStatus.OK);
         responseEntity = authService.authUser(loginRequest);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         log.debug("Getting user from database by username");
