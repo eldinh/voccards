@@ -22,8 +22,7 @@ public class CardSet {
     @JoinColumn(name = "creator_id")
     private UserApp creator;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                            CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "card_set_card",
             joinColumns = { @JoinColumn(name = "card_set_id") },
@@ -31,14 +30,23 @@ public class CardSet {
     )
     private List<Card> cardList;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cardSet", fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
     public void addCard(Card card){
         if (cardList == null)
             cardList = new ArrayList<>();
         cardList.add(card);
-
     }
 
-//    @ManyToMany
-//    private List<Customer> visitors;
+    public void addReview(Review review){
+        if (reviews == null)
+            reviews = new ArrayList<>();
+        review.setCardSet(this);
+        reviews.add(review);
+    }
+
+
 
 }

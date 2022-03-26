@@ -13,10 +13,10 @@ public interface CardDao extends JpaRepository<Card, Long> {
 
     List<Card> findByEn(String word);
 
-    @Query("select c from Card c where c.en like %?1%")
+    @Query("select c from Card c where c.en like ?1%")
     List<Card> findByPartEn(String word);
 
-    @Query("select c from Card c where c.ru like %?1%")
+    @Query("select c from Card c where c.ru like ?1%")
     List<Card> findByPartRu(String word);
 
 }

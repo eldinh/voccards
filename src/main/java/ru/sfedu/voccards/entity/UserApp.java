@@ -25,7 +25,7 @@ public class UserApp {
     @Column(unique = true)
     private String username;
 
-
+    @JsonIgnore
     private String password;
 
     @Column(unique = true)
@@ -46,7 +46,7 @@ public class UserApp {
             , CascadeType.REFRESH}, fetch = FetchType.LAZY
      )
     @JoinTable(
-            name = "other_sets_customer",
+            name = "other_sets_user",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "other_sets_id") }
     )
@@ -56,14 +56,13 @@ public class UserApp {
     public void addOwnCardSet(CardSet cardSet){
         if (ownSets == null)
             ownSets = new ArrayList<>();
-
+        cardSet.setCreator(this);
         ownSets.add(cardSet);
     }
 
     public void addOtherSets(CardSet cardSet){
         if (otherSets == null)
             otherSets = new ArrayList<>();
-
         otherSets.add(cardSet);
     }
 

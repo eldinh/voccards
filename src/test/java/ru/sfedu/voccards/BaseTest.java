@@ -9,24 +9,25 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.sfedu.voccards.dao.CardDao;
-import ru.sfedu.voccards.dao.CardSetDao;
-import ru.sfedu.voccards.dao.RoleDao;
-import ru.sfedu.voccards.dao.UserDao;
+import ru.sfedu.voccards.dao.*;
 import ru.sfedu.voccards.dto.*;
 import ru.sfedu.voccards.entity.*;
 import ru.sfedu.voccards.service.AuthService;
-import ru.sfedu.voccards.service.AuthServiceTest;
 import ru.sfedu.voccards.service.MainService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @TestPropertySource(locations="classpath:test.properties")
 @Transactional
@@ -52,6 +53,9 @@ public class BaseTest extends TestCase {
 
 	@Autowired
 	protected UserDao userDao;
+
+	@Autowired
+	protected ReviewDao reviewDao;
 
     protected Card card = new Card(null, "тест", "ру_тест", "test", "en_test");
     protected Card cardToUpdate = new Card(null, "тест_обнова", "ру_тест", "test_update", "en_test");
@@ -90,11 +94,11 @@ public class BaseTest extends TestCase {
 
 	@Before
 	public void before() {
+		userDao.deleteAll();
 		cardSetDao.deleteAll();
 		cardDao.deleteAll();
-
-		userDao.deleteAll();
 		roleDao.deleteAll();
+		reviewDao.deleteAll();
 
 		cardDao.saveAll(cardList);
 		roleDao.save(new Role(null, ERole.ROLE_USER));

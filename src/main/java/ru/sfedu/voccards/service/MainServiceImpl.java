@@ -1,6 +1,5 @@
 package ru.sfedu.voccards.service;
 
-import com.sun.istack.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,11 @@ import ru.sfedu.voccards.entity.UserApp;
 import static ru.sfedu.voccards.Constants.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class MainServiceImpl implements MainService{
+public class  MainServiceImpl implements MainService{
 
     private static final Logger log = LogManager.getLogger(MainServiceImpl.class.getName());
 
@@ -80,7 +80,7 @@ public class MainServiceImpl implements MainService{
         if (cardSet.isEmpty())
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse(String.format(CARDSET_BY_ID_ERROR, id)));
+                    .body(new MessageResponse(String.format(CARDSET_NOT_EXIST, id)));
 
         return ResponseEntity.ok(cardSet.get());
     }
@@ -103,7 +103,6 @@ public class MainServiceImpl implements MainService{
                     throw new Exception(String.format(CARD_NOT_EXIST_BY_ID, id));
                 cardSet.addCard(card.get());
             }
-            cardSet.setCreator(user.get());
             log.debug("createCardSet[4]: Adding cardSet to user");
             user.get().addOwnCardSet(cardSet);
             return ResponseEntity.ok().body(new MessageResponse(String.format(CARDSET_ADDED, username)));
@@ -165,6 +164,28 @@ public class MainServiceImpl implements MainService{
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> deleteOwnCardSet(String username, Long id) {
+        log.info("Starting MainServiceImpl deleteOwnCardSet[0]");
+        try {
+            log.info("deleteOwnCardSet[1]: username - {}, cardSetId - {}", username, id);
+            log.debug("deleteOwnCardSet[2]: Getting user by username {}", username);
+            Optional<UserApp> user = userDao.findByUsername(username);
+            if (user.isEmpty())
+                throw new Exception(AUTHENTICATION_TOKEN_ERROR);
+            Optional<CardSet> cardSet = cardSetDao.findById(id);
+            if (cardSet.isEmpty() || !Objects.equals(cardSet.get().getCreator().getUsername(), username))
+                throw new Exception(String.format(CARDSET_NOT_EXIST, id));
+            log.debug("deleteOwnCardSet[3]: Deleting cardSet {}", cardSet.get().getId());
+            cardSetDao.delete(cardSet.get());
+            return ResponseEntity.ok(new MessageResponse(CARDSET_REMOVED));
+        }catch (Exception e){
+            log.error("Function MainServiceImpl deleteOwnCardSet had failed[]: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 

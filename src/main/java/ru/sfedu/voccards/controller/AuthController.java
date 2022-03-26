@@ -15,7 +15,7 @@ import ru.sfedu.voccards.service.AuthService;
 @RequestMapping("/api")
 public class AuthController {
 
-    private static Logger log = LogManager.getLogger(AuthController.class);
+    private static final Logger log = LogManager.getLogger(AuthController.class);
 
     @Autowired
     private AuthService authService;
@@ -23,12 +23,13 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest){
-        log.debug("Authentication");
+        log.info("/api/signin - Authorization, username - {}", loginRequest.getUsername());
         return authService.authUser(loginRequest);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest){
+        log.info("/api/register - Register a user {}", signupRequest.getUsername());
         return authService.register(signupRequest);
     }
 }

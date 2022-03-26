@@ -5,4 +5,5 @@ import ru.sfedu.voccards.entity.CardSet;
 
 
 public interface CardSetDao extends JpaRepository<CardSet, Long> {
+
 }

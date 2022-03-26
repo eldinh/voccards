@@ -68,11 +68,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/register").permitAll();
-        http.authorizeRequests().antMatchers("/api/signin").permitAll();
-        http.authorizeRequests().antMatchers("/api/users").permitAll();
-        http.authorizeRequests().antMatchers("/api/createCardSet").authenticated();
-        http.authorizeRequests().antMatchers("/api/getOwnCardSet").authenticated();
+        http.authorizeRequests()
+                .antMatchers("/api/findCardByEn").permitAll()
+                .antMatchers("/api/findCardByRu").permitAll()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/signin").permitAll()
+                .antMatchers("/api/users").permitAll()
+                        .anyRequest().authenticated();
 
         // adding custom filter
         http.addFilterBefore(authJwtTokenFilter()
