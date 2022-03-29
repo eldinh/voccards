@@ -17,6 +17,8 @@ public class CardSet {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id")

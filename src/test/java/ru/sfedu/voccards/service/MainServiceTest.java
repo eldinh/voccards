@@ -71,7 +71,7 @@ public class MainServiceTest extends BaseTest {
         createUser();
 
         log.debug("Creating card set for user {}", username);
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()));
+        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()), "name");
 
         log.debug("Getting user {}", username);
         userOptional = userDao.findByUsername(username);
@@ -88,17 +88,17 @@ public class MainServiceTest extends BaseTest {
     public void testFailCreateCardSet(){
         log.info("Test fail Create CardSet");
         log.debug("Create Card Set for non exist user");
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()));
+        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()), "q");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
         log.debug("Register user");
         assertEquals(authService.register(signupRequest).getStatusCode(), HttpStatus.OK);
         log.debug("Null argument");
-        responseEntity = mainService.createCardSet(username, null);
+        responseEntity = mainService.createCardSet(username, null, null);
         log.info(responseEntity);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
 
         log.debug("Wrong card is");
-        responseEntity = mainService.createCardSet(username, new ArrayList<>(List.of(0L)));
+        responseEntity = mainService.createCardSet(username, new ArrayList<>(List.of(0L)), "name");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
@@ -107,7 +107,8 @@ public class MainServiceTest extends BaseTest {
         log.info("Test delete cardSet");
         createUser();
         log.debug("Creating card set to user {}", username);
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()));
+        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId)
+                .collect(Collectors.toList()), "name");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 
         userOptional = userDao.findByUsername(username);

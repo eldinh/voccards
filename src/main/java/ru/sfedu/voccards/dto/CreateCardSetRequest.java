@@ -10,5 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCardSetRequest {
+
+    private String name;
+
     private List<Long> idCardList;
 }

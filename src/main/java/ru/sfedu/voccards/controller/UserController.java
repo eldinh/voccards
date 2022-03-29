@@ -63,7 +63,7 @@ public class UserController {
     @PostMapping("/createCardSet")
     public ResponseEntity<?> createCardSet(@RequestBody CreateCardSetRequest cardSetRequest, Principal principal){
         log.info("/api/createCardSet - Creating cardSet to user {}", principal.getName());
-        return mainService.createCardSet(principal.getName(), cardSetRequest.getIdCardList());
+        return mainService.createCardSet(principal.getName(), cardSetRequest.getIdCardList(), cardSetRequest.getName());
     }
 
     @GetMapping("/getOwnCardSet")
@@ -76,6 +76,12 @@ public class UserController {
     public ResponseEntity<?> deleteOwnCardSet(@PathVariable Long id, Principal principal){
         log.info("/api/deleteCardSet/{} - Deleting cardSet {}", id, id);
         return mainService.deleteOwnCardSet(principal.getName(), id);
+    }
+
+    @GetMapping("/preview")
+    public ResponseEntity<?> getPreview(Principal principal){
+        log.info("/api/preview - Getting cardSet preview for user {}", principal.getName());
+        return mainService.getPreview(principal.getName());
     }
 
 

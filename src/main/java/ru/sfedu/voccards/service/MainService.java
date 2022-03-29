@@ -41,7 +41,7 @@ public interface MainService {
      * @param idCardLost - list of card's ids
      * @return ResponseEntity
      */
-    ResponseEntity<?> createCardSet(String username, List<Long> idCardLost);
+    ResponseEntity<?> createCardSet(String username, List<Long> idCardLost, String name);
 
     /**
      * Getting all user's own cardSet
@@ -57,6 +57,8 @@ public interface MainService {
      * @return ResponseEntity
      */
     ResponseEntity<?> deleteOwnCardSet(String username, Long id);
+
+    ResponseEntity<?> getPreview(String username);
 
 
 

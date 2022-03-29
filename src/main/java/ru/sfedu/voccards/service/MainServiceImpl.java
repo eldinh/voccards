@@ -10,6 +10,7 @@ import ru.sfedu.voccards.dao.CardDao;
 import ru.sfedu.voccards.dao.CardSetDao;
 import ru.sfedu.voccards.dao.RoleDao;
 import ru.sfedu.voccards.dao.UserDao;
+import ru.sfedu.voccards.dto.CardPreviewResponse;
 import ru.sfedu.voccards.dto.MessageResponse;
 import ru.sfedu.voccards.entity.Card;
 import ru.sfedu.voccards.entity.CardSet;
@@ -17,6 +18,7 @@ import ru.sfedu.voccards.entity.ERole;
 import ru.sfedu.voccards.entity.UserApp;
 import static ru.sfedu.voccards.Constants.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -87,7 +89,7 @@ public class  MainServiceImpl implements MainService{
 
     @Override
     @Transactional
-    public ResponseEntity<?> createCardSet(String username, List<Long> idCardLost) {
+    public ResponseEntity<?> createCardSet(String username, List<Long> idCardLost, String name) {
         log.info("Starting MainServiceImpl createCardSet[0]");
         try {
             log.info("createCardSet[1]: username - {}, cardList - {}", username, idCardLost);
@@ -103,6 +105,7 @@ public class  MainServiceImpl implements MainService{
                     throw new Exception(String.format(CARD_NOT_EXIST_BY_ID, id));
                 cardSet.addCard(card.get());
             }
+            cardSet.setName(name);
             log.debug("createCardSet[4]: Adding cardSet to user");
             user.get().addOwnCardSet(cardSet);
             return ResponseEntity.ok().body(new MessageResponse(String.format(CARDSET_ADDED, username)));
@@ -118,13 +121,13 @@ public class  MainServiceImpl implements MainService{
         log.info("Starting MainServiceImpl getCardSetList[0]");
         try {
             log.info("getCardSetList[1]: username - {}", username);
-            log.debug("Getting user from db by username {}", username);
+            log.debug("getCardSetList[2]: Getting user from db by username {}", username);
             Optional<UserApp> user = userDao.findByUsername(username);
             if (user.isEmpty())
                 throw new Exception(AUTHENTICATION_TOKEN_ERROR);
             return ResponseEntity.ok(user.get().getOwnSets());
         }catch (Exception e){
-            log.error("Function MainServiceImpl getCardSetList had failed[]: {}", e.getMessage());
+            log.error("Function MainServiceImpl getCardSetList had failed[3]: {}", e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -185,6 +188,29 @@ public class  MainServiceImpl implements MainService{
             return ResponseEntity.ok(new MessageResponse(CARDSET_REMOVED));
         }catch (Exception e){
             log.error("Function MainServiceImpl deleteOwnCardSet had failed[]: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> getPreview(String username) {
+        log.info("Starting MainServiceImpl getPreview[0]");
+        try {
+            log.info("getPreview[1]: username - {}", username);
+            log.debug("getPreview[2]: Getting user from db by username {}", username);
+            Optional<UserApp> user = userDao.findByUsername(username);
+            if (user.isEmpty())
+                throw new Exception(AUTHENTICATION_TOKEN_ERROR);
+            List<CardPreviewResponse> responses = new ArrayList<>();
+            log.debug("getPreview[3]: Getting information from cardSets");
+            for (CardSet cardSet: user.get().getOwnSets())
+                responses.add(new CardPreviewResponse(cardSet.getId() ,cardSet.getCreator().getUsername(),
+                        cardSet.getName(), cardSet.getCardList().size()));
+
+            return ResponseEntity.ok(responses);
+        }catch (Exception e){
+            log.error("Function MainServiceImpl getPreview had failed[4]: {}", e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
