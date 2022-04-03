@@ -1,6 +1,7 @@
 package ru.sfedu.voccards.service;
 
 import org.springframework.http.ResponseEntity;
+import ru.sfedu.voccards.entity.Card;
 
 import java.util.List;
 
@@ -21,27 +22,14 @@ public interface MainService {
      */
     ResponseEntity<?> getCardSetById(Long id);
 
-    /**
-     * Finding card by english word
-     * @param en
-     * @return ResponseEntity
-     */
-    ResponseEntity<?> findCardByEn(String en);
-
-    /**
-     * Finding card by russian word
-     * @param ru
-     * @return ResponseEntity
-     */
-    ResponseEntity<?> findCardByRu(String ru);
 
     /**
      * Creating new CardSet
      * @param username -
-     * @param idCardLost - list of card's ids
+     * @param cards - list of card's ids
      * @return ResponseEntity
      */
-    ResponseEntity<?> createCardSet(String username, List<Long> idCardLost, String name);
+    ResponseEntity<?> createCardSet(String username, List<Card> cards, String name);
 
     /**
      * Getting all user's own cardSet

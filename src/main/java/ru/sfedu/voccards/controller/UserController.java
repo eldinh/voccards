@@ -48,22 +48,10 @@ public class UserController {
         return mainService.addRoleToUser(addRoleRequest.getUsername(), addRoleRequest.getRole());
     }
 
-    @GetMapping("/findCardByRu/{ru}")
-    public ResponseEntity<?> findCardByRu(@PathVariable String ru){
-        log.info("/api/findCardByRu - Finding card by word {}", ru);
-        return mainService.findCardByRu(ru);
-    }
-
-    @GetMapping("/findCardByEn/{en}")
-    public ResponseEntity<?> findCardByEn(@PathVariable String en){
-        log.info("/api/findCardByEn - Finding card by word {}", en);
-        return mainService.findCardByEn(en);
-    }
-
     @PostMapping("/createCardSet")
     public ResponseEntity<?> createCardSet(@RequestBody CreateCardSetRequest cardSetRequest, Principal principal){
         log.info("/api/createCardSet - Creating cardSet to user {}", principal.getName());
-        return mainService.createCardSet(principal.getName(), cardSetRequest.getIdCardList(), cardSetRequest.getName());
+        return mainService.createCardSet(principal.getName(), cardSetRequest.getCardList(), cardSetRequest.getName());
     }
 
     @GetMapping("/getOwnCardSet")

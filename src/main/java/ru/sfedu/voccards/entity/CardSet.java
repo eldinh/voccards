@@ -24,14 +24,13 @@ public class CardSet {
     @JoinColumn(name = "creator_id")
     private UserApp creator;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "card_set_card",
             joinColumns = { @JoinColumn(name = "card_set_id") },
             inverseJoinColumns = { @JoinColumn(name = "card_id") }
     )
     private List<Card> cardList;
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cardSet", fetch = FetchType.LAZY)
     private List<Review> reviews;

@@ -10,7 +10,7 @@ public class Constants {
     public static final String CARDSET_REMOVED = "CardSet was deleted";
     public static final String CARDSET_ADDED = "CardSet added to user %s";
     public static final String CARDSET_NOT_EXIST = "CardSet wasn't found by id %d";
-
+    public static final String CARDSET_WRONG_REQUEST = "CardSet null ot empty";
 
 
     public static final String USERNAME_EXIST = "Username exist";

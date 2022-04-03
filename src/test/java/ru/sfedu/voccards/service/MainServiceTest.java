@@ -26,52 +26,12 @@ public class MainServiceTest extends BaseTest {
     }
 
     @Test
-    public void testFindCardByEn(){
-        log.info("Test Find Card by en");
-        log.debug("Getting card that mention");
-        responseEntity = mainService.findCardByEn("app");
-        log.info(responseEntity.getBody());
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        assert ((List<Card>) responseEntity.getBody()).size() > 0;
-    }
-
-    @Test
-    public void testFindCardByEnFail(){
-        log.info("Test Fail Find Card by ru");
-        log.debug("Null value");
-        assertEquals(mainService.findCardByEn(null).getStatusCode(), HttpStatus.BAD_REQUEST);
-
-        log.debug("Card or cards don't exist");
-        assertEquals(mainService.findCardByEn("RANDWADSLDJAJFAPWF").getStatusCode(), HttpStatus.BAD_REQUEST);
-
-    }
-
-    @Test
-    public void testFindCardByRu(){
-        log.info("Test Find Card by ru");
-        log.debug("Getting card that mention");
-        responseEntity = mainService.findCardByRu("п");
-        log.info(responseEntity.getBody());
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-    }
-
-    @Test
-    public void testFindCardByRuFail(){
-        log.info("Test Fail Find Card by ru");
-        log.debug("Null value");
-        assertEquals(mainService.findCardByRu(null).getStatusCode(), HttpStatus.BAD_REQUEST);
-
-        log.debug("Card or cards don't exist");
-        assertEquals(mainService.findCardByRu("вцфаолрфдрадфоац").getStatusCode(), HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
     public void testCreateCardSet(){
         log.info("Test Create CardSet");
         createUser();
 
         log.debug("Creating card set for user {}", username);
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()), "name");
+        responseEntity = mainService.createCardSet(username, cardList, "name");
 
         log.debug("Getting user {}", username);
         userOptional = userDao.findByUsername(username);
@@ -88,7 +48,7 @@ public class MainServiceTest extends BaseTest {
     public void testFailCreateCardSet(){
         log.info("Test fail Create CardSet");
         log.debug("Create Card Set for non exist user");
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId).collect(Collectors.toList()), "q");
+        responseEntity = mainService.createCardSet(username, cardList, "q");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
         log.debug("Register user");
         assertEquals(authService.register(signupRequest).getStatusCode(), HttpStatus.OK);
@@ -98,7 +58,7 @@ public class MainServiceTest extends BaseTest {
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
 
         log.debug("Wrong card is");
-        responseEntity = mainService.createCardSet(username, new ArrayList<>(List.of(0L)), "name");
+        responseEntity = mainService.createCardSet(username, new ArrayList<>(), "name");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
@@ -107,8 +67,7 @@ public class MainServiceTest extends BaseTest {
         log.info("Test delete cardSet");
         createUser();
         log.debug("Creating card set to user {}", username);
-        responseEntity = mainService.createCardSet(username, cardList.stream().map(Card::getId)
-                .collect(Collectors.toList()), "name");
+        responseEntity = mainService.createCardSet(username, cardList, "name");
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 
         userOptional = userDao.findByUsername(username);

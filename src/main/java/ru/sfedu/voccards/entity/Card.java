@@ -22,12 +22,6 @@ public class Card {
     private String ru;
 
     @NotNull
-    private String ruTranscription;
-
-    @NotNull
     private String en;
-
-    @NotNull
-    private String enTranscription;
 
 }

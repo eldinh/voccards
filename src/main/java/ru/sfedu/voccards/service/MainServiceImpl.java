@@ -89,22 +89,19 @@ public class  MainServiceImpl implements MainService{
 
     @Override
     @Transactional
-    public ResponseEntity<?> createCardSet(String username, List<Long> idCardLost, String name) {
+    public ResponseEntity<?> createCardSet(String username, List<Card> cards, String name) {
         log.info("Starting MainServiceImpl createCardSet[0]");
         try {
-            log.info("createCardSet[1]: username - {}, cardList - {}", username, idCardLost);
+            log.info("createCardSet[1]: username - {}, cardList - {}", username, cards);
             log.debug("createCardSet[2]: Getting user by username {}", username);
             Optional<UserApp> user = userDao.findByUsername(username);
             if (user.isEmpty())
                 throw new Exception(AUTHENTICATION_TOKEN_ERROR);
+            if (cards == null || cards.isEmpty())
+                throw new Exception(CARDSET_WRONG_REQUEST);
             log.debug("createCardSet[3]: Creating cardSet");
             CardSet cardSet = new CardSet();
-            for (Long id: idCardLost){
-                Optional<Card> card = cardDao.findById(id);
-                if (card.isEmpty())
-                    throw new Exception(String.format(CARD_NOT_EXIST_BY_ID, id));
-                cardSet.addCard(card.get());
-            }
+            cardSet.setCardList(cards);
             cardSet.setName(name);
             log.debug("createCardSet[4]: Adding cardSet to user");
             user.get().addOwnCardSet(cardSet);
@@ -129,44 +126,6 @@ public class  MainServiceImpl implements MainService{
         }catch (Exception e){
             log.error("Function MainServiceImpl getCardSetList had failed[3]: {}", e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> findCardByEn(String en) {
-        log.info("Starting MainServiceImpl findCardByEn[0]");
-        try {
-            log.info("findCardByEn[1]: en - {}", en);
-            log.debug("findCardByEn[2]: Getting cards from database");
-            List<Card> cardList = cardDao.findByPartEn(en);
-            if (cardList == null || cardList.isEmpty())
-                throw new Exception(String.format(CARD_NOT_EXIST, en));
-            return ResponseEntity.ok(cardList);
-        }catch (Exception e){
-            log.error("Function MainServiceImpl findCardByEn had failed[3]: {}", e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(e.getMessage()));
-        }
-
-
-    }
-
-    @Override
-    public ResponseEntity<?> findCardByRu(String ru) {
-        log.info("Starting MainServiceImpl findCardByRu[0]");
-        try {
-            log.info("findCardByRu[1]: ru - {}", ru);
-            log.debug("findCardByRu[2]: Getting cards from database");
-            List<Card> cardList = cardDao.findByPartRu(ru);
-            if (cardList == null || cardList.isEmpty())
-                throw new Exception(String.format(CARD_NOT_EXIST, ru));
-            return ResponseEntity.ok(cardList);
-        }catch (Exception e){
-            log.error("Function MainServiceImpl findCardByRu had failed[3]: {}", e.getMessage());
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(e.getMessage()));
         }
     }
 

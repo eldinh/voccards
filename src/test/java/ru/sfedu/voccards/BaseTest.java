@@ -57,15 +57,15 @@ public class BaseTest extends TestCase {
 	@Autowired
 	protected ReviewDao reviewDao;
 
-    protected Card card = new Card(null, "тест", "ру_тест", "test", "en_test");
-    protected Card cardToUpdate = new Card(null, "тест_обнова", "ру_тест", "test_update", "en_test");
+    protected Card card = new Card(null, "тест", "test");
+    protected Card cardToUpdate = new Card(null, "ру_тест", "en_test");
     protected List<Card> cardList = new ArrayList<>(List.of(
-            		new Card(null, "яблоко", "й’аблака", "apple", "æpl"),
-		new Card(null, "машина", "машына", "car", "kɑːr"),
-		new Card(null, "подавать заявление", "падав`ат’ зай’ивл’`эн’ий’э", "apply for", "əˈplaɪ fə(r)"),
-		new Card(null, "расширять", "раш:ыр’`ат’", "expand", "ɪkˈspænd"),
-		new Card(null, "цель", "ц`эл’", "goal", "ɡəʊl"),
-		new Card(null, "пропорция", "прап`орцый’а", "proportion", "prəˈpɔːʃn")
+            		new Card(null, "яблоко", "apple"),
+		new Card(null, "машина", "car"),
+		new Card(null, "подавать заявление", "apply for"),
+		new Card(null, "расширять","expand"),
+		new Card(null, "цель", "goal"),
+		new Card(null, "пропорция", "proportion")
     ));
 
 	protected final String username = "eldinh";
