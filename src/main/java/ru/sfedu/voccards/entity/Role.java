@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Data
@@ -23,6 +23,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private ERole name;
-
-
 }
