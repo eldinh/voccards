@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/07092023-create-role-table.sql
+  - include:
+      file: db/changelog/changeset/07092023-insert-role-into-table.sql
+  - include:
+      file: db/changelog/changeset/07092023-create-user-table.sql
+  - include:
+      file: db/changelog/changeset/07092023-create-card-set-table.sql
+  - include:
+      file: db/changelog/changeset/11092023-create-card-table.sql
+  - include:
+      file: db/changelog/changeset/11092023-create-review-table.sql
+  - include:
+      file: db/changelog/changeset/11092023-create-user-role-table.sql
+  - include:
+      file: db/changelog/changeset/11092023-create-user-card-set-table.sql
