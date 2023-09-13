@@ -1,15 +1,18 @@
 package ru.sfedu.voccards.entity;
 
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class Card {
@@ -19,9 +22,15 @@ public class Card {
     private Long id;
 
     @NotNull
-    private String ru;
+    private String word;
 
     @NotNull
-    private String en;
+    private String translation;
 
+    @NotNull
+    private String transcription;
+
+    @NotNull
+    @JsonIgnore
+    private Long cardSetId;
 }

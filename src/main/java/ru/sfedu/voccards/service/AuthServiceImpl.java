@@ -87,28 +87,23 @@ public class AuthServiceImpl implements AuthService{
         log.info("authUser[1]: User {} authorizing",loginRequest.getUsername() );
         try {
             log.debug("authUser[2]: Putting auth to security context");
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()));
+//            Authentication authentication = authenticationManager
+//                    .authenticate(new UsernamePasswordAuthenticationToken(
+//                            loginRequest.getUsername(),
+//                            loginRequest.getPassword()));
 
-            // security context used to store data about current user
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("authUser[3]: Generating jwt token");
-            String jwt = jwtUtils.generateJwtToken(authentication);
+//            // security context used to store data about current user
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            log.debug("authUser[3]: Generating jwt token");
+//            String jwt = jwtUtils.generateJwtToken(authentication);
+//
+//            log.debug("authUser[4]: Getting user details");
+//            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//            Set<String> roles = userDetails.getAuthorities().stream()
+//                    .map(GrantedAuthority::getAuthority)
+//                    .collect(Collectors.toSet());
 
-            log.debug("authUser[4]: Getting user details");
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            Set<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toSet());
-
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    "Bearer",
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    roles));
+            return null;
 
         }catch (Exception e){
             log.error("Function AuthService authUser had failed[5]: {}", e.getMessage());

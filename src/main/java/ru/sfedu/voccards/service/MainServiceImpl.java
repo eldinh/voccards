@@ -104,7 +104,6 @@ public class  MainServiceImpl implements MainService{
             cardSet.setCardList(cards);
             cardSet.setName(name);
             log.debug("createCardSet[4]: Adding cardSet to user");
-            user.get().addOwnCardSet(cardSet);
             return ResponseEntity.ok().body(new MessageResponse(String.format(CARDSET_ADDED, username)));
         }catch (Exception e){
             log.error("Function MainServiceImpl createCardSet had failed[5]: {}", e.getMessage());

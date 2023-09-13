@@ -9,20 +9,17 @@ enum ERole{
 
 class Card{
     -id: Long
-    -ru: String
-    -ruTranscription: String
-    -en: String
-    -enTranscription: String
-
+    -word: String
+    -translation: String
+    -transcription: String
 }
 
 class CardSet{
     -id: Long
     -creator: User
+    -participants: List<User>
     -cardList: List<Card>
     -reviews: List<Review>
-    +void addCard(Card)
-    +void addReview(Review)
 }
 
 class Review{
@@ -37,12 +34,10 @@ class User{
     -id: Long
     -username: String
     -password: String
-    -role: Role
+    -roles: List<Role>
     -email: String
     -ownSets: List<CardSet>
     -otherSets: List<CardSet>
-    +void addOwnCardSet(CardSet)
-    +void addOtherSets(CardSet)
 }
 
 class Role{
@@ -56,10 +51,6 @@ User *-- Role
 User o-- CardSet
 CardSet o-- Review
 
-
-
-
-
-
+hide method
 
 @enduml

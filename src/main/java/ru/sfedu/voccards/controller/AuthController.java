@@ -15,6 +15,7 @@ import ru.sfedu.voccards.service.AuthService;
 @RequestMapping("/api")
 public class AuthController {
 
+
     private static final Logger log = LogManager.getLogger(AuthController.class);
 
     @Autowired
